@@ -6,43 +6,64 @@ import Stars from 'react-native-stars';
 
 class DemandeCard extends React.Component {
     
+
+
+
+
+    displayContent=()=>{
+        let datatask=this.props.taskdata
+        let descriptionTab=datatask.description.split("</p>")[0].replace( /(<([^>]+)>)/ig, '')
+        console.log(descriptionTab)
+        
+        if (datatask.statue==="do") {
+            return(
+                <Card style={styles.card} disabled={true}>
+                    <View style={styles.global}>
+                        <Image style={styles.image} source={Images.plomberieCuisine} />
+                        <View style={styles.containerText}>
+                        <Text category='p1'>{datatask.title}</Text>
+                        <Text style={{fontSize:10}} numberOfLines={6}>{descriptionTab}</Text>
+                        <Text style={{fontSize:10, color:'#6E7EA4'}}>Prise en charge par: {datatask.technicien}</Text>
+                        </View>
+                        <View style={{justifyContent:'space-between', height:105}}>
+                            <Text category='c2'>{datatask.date}</Text>
+                            <Button style={styles.button} size='tiny' status='success'>Terminer </Button>
+                            <Button style={styles.button} size='tiny' status='info' onPress={() =>this.props.reclam()}>Réclamer </Button>
+                            <Stars display={datatask.note} spacing={3} count={5} starSize={15} fullStar= {Images.fullStar} emptyStar= {Images.emptyStar} update={(val)=> console.log(val)}/>
+                        </View>
+                    </View>
+                </Card>
+            )
+        } else {
+            return(
+                <Card disabled={true} style={styles.card}>
+                    <View style={styles.global}>
+                        <Image style={styles.image} source={Images.plomberieCuisine} />
+                        <View style={styles.containerText}>
+                        <Text category='p1'>{datatask.title}</Text>
+                        <Text style={{fontSize:10}} numberOfLines={4}>{descriptionTab}</Text>
+                        <Text style={{fontSize:10, color:'#6E7EA4'}}>Prise en charge par: {datatask.technicien}</Text>
+                        </View>
+                        <View style={{justifyContent:'space-between', height:105}}>
+                            <Text category='c2'>{datatask.date}</Text>
+                            <Button style={styles.button} size='tiny' status='warning'>En cours </Button>
+                            <Button style={styles.button} size='tiny' status='danger'>Réclamer </Button>
+                            <Stars display={datatask.note} spacing={3} count={5} starSize={15} fullStar= {Images.fullStar} emptyStar= {Images.emptyStar} update={(val)=> console.log(val)}/>
+                        </View>
+                    </View>
+                </Card>
+            )
+        }
+    }
+
+
     render() {
        
         
     return (
         <View>
-            <Card style={styles.card} disabled={true}>
-            <View style={styles.global}>
-                <Image style={styles.image} source={Images.plomberieCuisine} />
-                <View style={styles.containerText}>
-                <Text category='p1'>Réparation de tuyaux</Text>
-                <Text style={{fontSize:10}} numberOfLines={6}>Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet, dolor sit ametdolor sit ametdolor sit ametdolor sit ametdolor sit amet</Text>
-                <Text style={{fontSize:10, color:'#6E7EA4'}}>Prise en charge par: nom et prénoms technicien</Text>
-                </View>
-                <View style={{justifyContent:'space-between', height:105}}>
-                    <Text category='c2'>Ven. 25/9/2020</Text>
-                    <Button style={styles.button} size='tiny' status='success'>Terminer </Button>
-                    <Button style={styles.button} size='tiny' status='info' onPress={() =>this.props.reclam()}>Réclamer </Button>
-                    <Stars display={2} spacing={3} count={5} starSize={15} fullStar= {Images.fullStar} emptyStar= {Images.emptyStar}/>
-                </View>
-            </View>
-        </Card>
-        <Card disabled={true} style={styles.card}>
-            <View style={styles.global}>
-                <Image style={styles.image} source={Images.plomberieCuisine} />
-                <View style={styles.containerText}>
-                <Text category='p1'>Réparation de tuyaux</Text>
-                <Text style={{fontSize:10}} numberOfLines={6}>Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet, dolor sit ametdolor sit ametdolor sit ametdolor sit ametdolor sit amet</Text>
-                <Text style={{fontSize:10, color:'#6E7EA4'}}>Prise en charge par: nom et prénoms technicien</Text>
-                </View>
-                <View style={{justifyContent:'space-between', height:105}}>
-                    <Text category='c2'>Ven. 25/9/2020</Text>
-                    <Button style={styles.button} size='tiny' status='warning'>En cours </Button>
-                    <Button style={styles.button} size='tiny' status='danger'>Réclamer </Button>
-                    <Stars display={0} spacing={3} count={5} starSize={15} fullStar= {Images.fullStar} emptyStar= {Images.emptyStar}/>
-                </View>
-            </View>
-        </Card>
+            
+        {this.displayContent()}
         
         </View>
         

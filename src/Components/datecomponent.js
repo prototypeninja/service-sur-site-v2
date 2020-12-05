@@ -10,7 +10,7 @@ class DateComponent extends React.Component {
         this.state = {
             isDatePickerVisible:false
         }
-        this.jour="non défini"
+        this.jour=this.newDate()
        
         
       }
@@ -20,12 +20,20 @@ class DateComponent extends React.Component {
         this.setState({ isDatePickerVisible: this.state.isDatePickerVisible=false })
       };
 
+      newDate=()=>{
+        var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
 
+      today = mm + '-' + dd + '-' + yyyy;
+      return today
+      }
        _handleConfirm (date){
          let jour=date.toLocaleDateString()
          this.props.datef(jour)
          const mois=date.getMonth()+1
-         this.jour=date.getDate()+" - "+mois+" - "+date.getUTCFullYear()
+         this.jour=date.getDate()+"-"+mois+"-"+date.getUTCFullYear()
        this._hideDatePicker();
       };
    

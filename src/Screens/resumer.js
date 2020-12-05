@@ -3,27 +3,72 @@ import { View,StyleSheet,ScrollView, Image,TouchableHighlight } from "react-nati
 import { Text,Card,Input,Button, Icon } from '@ui-kitten/components';
 import Images from '../Theme/Images';
 import { connect } from 'react-redux'
-
+import {userdata,taskCreat} from '../Api/apiOdoo';
 const mapStateToProps = (state) => {
     return state
   }
 class Resumer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoad:false,
+            userdata:{}
+        }
+       
+      }
+    componentDidMount(){
+    this.setState({ isLoad: true })
+    let datacheck= userdata(this.props.userdata.partner_id).then(data =>{
+        this.setState({ isLoad: false, userdata:data.result[0] })
 
+    })
+        
+    }
     sender=()=>{
-        this.props.navigation.navigate('Great')
+        let datasend= taskCreat(this.props.route.params.datademande).then(data =>{
+            console.log(data)
+            if (data.result!="error") {
+                this.props.navigation.navigate('Great')
+            }else{
+                alert("Erreur, Veuillez réessayer")
+            }
+    
+        })
     }
     cancel=()=>{
         this.props.navigation.navigate('Home')
     }
+
+    
+
+    description=()=>{
+        const data=this.props.route.params.datademande
+        if (data.photo!=69) {
+            return(
+                <View style={{ width:'100%', height:400}}>
+                    <Image style={{width:"100%", height:"80%"}} source={data.photo}/>
+                    <Text>{data.description}</Text>
+                </View>
+            )
+        }else{
+            return(
+                <View>
+                    <Text>{data.description}</Text>
+                </View>
+            )
+        }
+        
+    }
     
     render() {
         const data=this.props.route.params.datademande
+        console.log("photo",data.photo)
     return (
         
             
                 <View style={styles.global}>
                     <Text category='h5' status='control'>Résumer de la demande</Text>
-                    <Card style={styles.card}>
+                    <Card style={styles.card} disabled>
                         <View style={styles.cardContend}>
                             <Text>Service: {data.service}</Text>
                             <View style={styles.info}>
@@ -37,13 +82,14 @@ class Resumer extends React.Component {
                                 </View>
                                 <View style={styles.infocontent}>
                                     <Text category='c1'>Ville & adresse</Text>
-                                    <Text category='label'>Abidjan</Text>
-                                    <Text category='label'>2 plateau vallon</Text>
+                                    <Text category='label' style={{width:70, textAlign:'center'}}>{this.state.userdata.adresse}</Text>
                                 </View>
                             </View>
-
+                            <ScrollView>
                             <Text>Requête: {data.titre}  </Text>
-                            <Text style={{textAlign:'justify'}}>Description: {data.description}</Text>
+                            {this.description()}
+                            </ScrollView>
+                            
                             <View style={styles.baner}>
                                 <View style={styles.item}>
                                     <Image style={styles.itemImage} source={Images.ccm_1}/>

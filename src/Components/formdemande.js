@@ -1,5 +1,5 @@
 import React from "react";
-import { View,StyleSheet,ScrollView, Image,TouchableHighlight } from "react-native";
+import { View,StyleSheet,ScrollView, Image,TouchableOpacity } from "react-native";
 import { Text,Card,Input,Button, Icon } from '@ui-kitten/components';
 import Images from '../Theme/Images';
 import DateComponent from './datecomponent';
@@ -27,13 +27,13 @@ class FormDemande extends React.Component {
                       </View>
                     </View>
                    
-
+                    {/* 
                     <View style={styles.component}>
-                      <TouchableHighlight style={styles.mic}>
+                      <TouchableOpacity style={styles.mic} onPress={() =>this.props.audioScreen()}>
                         <Image style={styles.bigimage} source={Images.mic} />
-                      </TouchableHighlight>
+                      </TouchableOpacity>
                       <Text category='label' style={styles.text}>Ajouter une{"\n"}note vocale</Text>
-                    </View>
+                    </View> */}
 
                     <Button  style={styles.button} size='small' onPress={() =>this.props.senddata()}>Terminer</Button>
                 </View>

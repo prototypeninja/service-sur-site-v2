@@ -1,10 +1,11 @@
 import React from "react";
-import { View,StyleSheet, Image,TouchableOpacity, ScrollView } from "react-native";
+import { View,StyleSheet, Image,TouchableOpacity, ScrollView,ActivityIndicator } from "react-native";
 import { Text,Card,Input,Icon,Button    } from '@ui-kitten/components';
 import {Collapse,CollapseHeader, CollapseBody} from 'accordion-collapse-react-native';
 
 import Images from '../Theme/Images';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import {userdata} from '../Api/apiOdoo';
 const mapStateToProps = (state) => {
     return state
   }
@@ -13,6 +14,8 @@ class Profil extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoad:false,
+            userdata:{}
         }
        
       }
@@ -23,18 +26,32 @@ class Profil extends React.Component {
     
       }
     
-    render() {
-        let userData=this.props.userdata
-       let username=userData.name.split(" ")
-    return (
+componentDidMount(){
+    this.setState({ isLoad: true })
+    let datacheck= userdata(this.props.userdata.partner_id).then(data =>{
+        this.setState({ isLoad: false, userdata:data.result[0] })
+
+    })
+    
+}
+
+_displayContent(){
+    if(this.state.isLoad===true){
+        return(
+          <View style={styles.global}>
+            <ActivityIndicator size="large" color="#ffffff" />
+            </View>
+        )
+    }else{
         
-        <View style={styles.global}>
+        return(
+            <View style={styles.global}>
             <View style={styles.header}>
                 <Image style={styles.image} source={Images.profilec} />
                 <View >
-                    <Text status="control" category="h4">{username[0]}</Text>
-                    <Text status="control" category="h5">{username[1]}</Text>
-                    <Text  status='warning' category="label">{userData.username}</Text>
+                    <Text status="control" category="h4">{this.state.userdata.name}</Text>
+                    <Text  status='warning' category="label">{this.state.userdata.email}</Text>
+                    <Text  status='warning' category="label">{this.state.userdata.adresse}</Text>
                 </View>
             </View>
             <ScrollView style={styles.body}>
@@ -114,6 +131,20 @@ class Profil extends React.Component {
             </View>
            
         </View>
+        )
+    }
+  }
+
+
+
+
+    render() {
+       
+    return (
+        
+        <React.Fragment>
+        {this._displayContent()}
+      </React.Fragment>
        
       
     );

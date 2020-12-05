@@ -4,6 +4,7 @@ import { Text,Card, Button,Modal } from '@ui-kitten/components';
 import DemandeCard  from '../Components/demandecard'
 import { connect } from 'react-redux'
 import FormDemande from '../Components/formdemande';
+import {taskList} from '../Api/apiOdoo';
 const mapStateToProps = (state) => {
     return state
   }
@@ -12,7 +13,9 @@ class ListeDemande extends React.Component {
     super(props)
     this.state = {
       test:false,
-      visible:false
+      visible:false,
+      taskData:[],
+      isLoad:false
      
     }
     
@@ -56,8 +59,15 @@ class ListeDemande extends React.Component {
     
   }
   reclamation=()=>{
-    console.log('ok')
     this.setState({visible:true})
+  }
+
+  componentDidMount(){
+    let taskcheck= taskList(this.props.userdata.partner_id).then(data =>{
+    
+      this.setState({ isLoad: false, taskData:data.result })
+
+  })
   }
 
   
@@ -76,8 +86,16 @@ class ListeDemande extends React.Component {
               <Button style={styles.button} size='tiny' status='danger'  onPress={() =>this.setState({visible:false})} >Annluer</Button>
             </Modal>
                 <View style={styles.container}>
-                    <DemandeCard reclam={this.reclamation}/>
+                    
+                    <FlatList
+                    data={this.state.taskData}
+                    renderItem={({ item }) => (
+                      <DemandeCard reclam={this.reclamation} taskdata={item}/>
+                    )}
+                  keyExtractor={(item, index) => index}
+                />
                 </View>
+                
             
             </View>
 

@@ -22,7 +22,6 @@ class Preview extends React.Component {
   }
     
       render() {
-        console.log(this.props.route.params.userdata)
       return (
         
         <Carousel showsControls={false}>

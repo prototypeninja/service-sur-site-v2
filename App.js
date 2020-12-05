@@ -23,7 +23,7 @@ const App: () => React$Node = () => {
           
           <StatusBar backgroundColor="#C72740" />
           
-        <Navigation/>
+          <Navigation/>
       
         </ApplicationProvider>
       </PersistGate>

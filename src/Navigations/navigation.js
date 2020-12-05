@@ -22,7 +22,7 @@ import TechHome from '../Screens/techHome';
 import TechDemande from '../Screens/techDemandes';
 import LiveDemande from '../Screens/liveDemandes';
 import ForumDemandeTech from '../Screens/forumDemandeTech';
-
+import AudioTest from '../Screens/audioTest'
 const Stack = createStackNavigator();
 
 function Navigation() {
@@ -131,6 +131,15 @@ function Navigation() {
               header:Loginheader
             })}
           />
+
+          <Stack.Screen
+            name="AudioTest"
+            component={AudioTest}
+            options={({ navigation }) => ({
+              header:Loginheader
+            })}
+          />
+
 
 
           

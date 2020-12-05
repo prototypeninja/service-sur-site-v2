@@ -41,7 +41,6 @@ returnSelectvalue=(item)=>{
     return(<SelectItem key={item.id} title={value} onPress={() =>this.setState({ selectedIndex: value })}/>)
 }
     render() {
-        console.log("user",this.props.userdata.partner_id)
     return (
         <View style={styles.super}>
             <Modal style={{width:'100%', flexDirection:'column',alignItems:'center'}} visible={this.state.visible}>

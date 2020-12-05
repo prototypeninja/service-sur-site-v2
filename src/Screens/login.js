@@ -67,7 +67,6 @@ _displayContent(){
   }
 }
     render() {
-      console.log(this.props)
     return (
       <React.Fragment>
       {this._displayContent()}

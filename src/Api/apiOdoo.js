@@ -80,3 +80,67 @@ export function login (number, password) {
     
        
     }
+export function serviceDetail (id,service) {
+
+  const url = 'http://192.168.137.1:8069/service/detail'
+  
+  return fetch(url, {
+      method:'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({jsonrpc: "2.0", 
+        params:{
+          "id":id,
+          "service":service
+        }
+        })
+      })
+    .then((response) => response.json())
+    .catch((error) => console.error('errorapi ',error))
+  
+      
+  }
+
+  export function taskCreat (objet) {
+
+    const url = 'http://192.168.137.1:8069/task/creat'
+    
+    return fetch(url, {
+        method:'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({jsonrpc: "2.0", 
+          params:objet
+          })
+        })
+      .then((response) => response.json())
+      .catch((error) => console.error('errorapi ',error))
+    
+        
+    }
+
+    export function taskList (id) {
+
+      const url = 'http://192.168.137.1:8069/task/list'
+      
+      return fetch(url, {
+          method:'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({jsonrpc: "2.0", 
+            params:{
+              "id":id
+               }
+            })
+          })
+        .then((response) => response.json())
+        .catch((error) => console.error('errorapi ',error))
+      
+          
+      }

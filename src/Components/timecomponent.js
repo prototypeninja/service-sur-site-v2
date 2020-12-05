@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DateTimePickerModal from "react-native-modal-datetime-picker";;
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {View} from 'react-native';
 import { Button,Text} from '@ui-kitten/components';
 class TimeComponent extends React.Component {
@@ -9,13 +9,18 @@ class TimeComponent extends React.Component {
         this.state = {
             isDatePickerVisible:false
         }
-        this.time="non défini"
+        this.time=this.newTime()
         
         
        
         
       }
-    
+      newTime=()=>{
+        var today = new Date();
+        var l=today.toLocaleTimeString()
+            l=today.getHours()+" heure "+today.getMinutes()+" minutes"
+      return l
+      }
       
        _hideDatePicker () {
         this.setState({ isDatePickerVisible: this.state.isDatePickerVisible=false })
@@ -36,7 +41,7 @@ class TimeComponent extends React.Component {
     return (
       <View>
         <Text category='label'> {this.time}</Text>
-        <Button  size='tiny' onPress={() => this.setState({ isDatePickerVisible: this.state.isDatePickerVisible=true })}>Modifier la date</Button>
+        <Button  size='tiny' onPress={() => this.setState({ isDatePickerVisible: this.state.isDatePickerVisible=true })}>Modifier l'heure</Button>
         
         <DateTimePickerModal
           isVisible={this.state.isDatePickerVisible}

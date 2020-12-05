@@ -1,10 +1,12 @@
 import React from "react";
 import { View,StyleSheet,ScrollView, Image,TouchableHighlight } from "react-native";
-import { Text,Card,Button } from '@ui-kitten/components';
+import { Text,Card,Button,Modal } from '@ui-kitten/components';
 import Images from '../Theme/Images';
 import FormDemande from '../Components/formdemande';
 import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker'
+import ImagePicker from 'react-native-image-picker';
+import {serviceDetail} from '../Api/apiOdoo';
+
 const mapStateToProps = (state) => {
     return state
   }
@@ -13,10 +15,13 @@ class Formulaire extends React.Component {
         super(props)
         this.state = {
           photo:Images.photo,
-          test:false
+          test:false,
+          techVille:0,
+          techGlobal:0,
+          detail:"",
+          visible:true
          
         }
-        
         this.titre=""
         this.description=""
         this.date=""
@@ -48,7 +53,9 @@ class Formulaire extends React.Component {
             jour:this.date,
             heure:this.time,
             photo:this.state.photo,
-            service:this.props.route.params.servicedata.nom
+            photoUrl:this.state.photo.uri,
+            service:this.props.route.params.servicedata.nom,
+            id:this.props.userdata.partner_id
     
           }
     
@@ -57,6 +64,10 @@ class Formulaire extends React.Component {
           alert('Veuillez remplir toute les information')
         }
         
+      }
+
+      audioScreen=()=>{
+        this.props.navigation.navigate('AudioTest')
       }
      
 
@@ -93,12 +104,29 @@ class Formulaire extends React.Component {
           )
         }
       }
+      componentDidMount(){
+        let servicedata= serviceDetail(this.props.userdata.partner_id,this.props.route.params.servicedata.nom).then(data =>{
+          console.log(data.result)
+          if (data.result!="error service" && data.result!="error") {
+            this.setState({
+              techVille:data.result.techVille,
+              techGlobal:data.result.techGlobal,
+              detail:data.result.detail
+            })
+          }else if (data.result==="error service") {
+            this.setState({
+              detail:"service non disponible"
+            })
+          }
+      })
+      }
     
     render() {
         
     return (
         
             <View style={styles.global} >
+              
                 <View style={styles.container}>
                     <ScrollView>
                         <Card style={styles.card}>
@@ -106,10 +134,10 @@ class Formulaire extends React.Component {
                                 <Image style={styles.image} source={this.props.route.params.servicedata.image} />
                                 <View>
                                     <Text style={{color:'#26325B'}} category='h6'>{this.props.route.params.servicedata.nom}</Text>
-                                    <Text category ='c2'>5 Techniciens disponibles dans votre villes</Text>
-                                    <Text category ='c2'>10 Techniciens disponibles en générale</Text>
+                                    <Text category ='c2'>{this.state.techVille} Techniciens disponibles dans votre villes</Text>
+                                    <Text category ='c2'>{this.state.techGlobal} Techniciens disponibles en générale</Text>
                                     <View style={{flexDirection:'row', width:'85%', justifyContent:'flex-end'}}>
-                                    <Button style={styles.button} size='tiny'>Détail de service</Button>
+                                    <Button style={styles.button} size='tiny' onPress={()=>alert(this.state.detail)}>Détail de service</Button>
                                     </View>
                                     
                                 </View>
@@ -120,7 +148,7 @@ class Formulaire extends React.Component {
                             <TouchableHighlight style={styles.cameracontainer} onPress={this._photoClicked}>
                             {this._displayContent()}
                             </TouchableHighlight>
-                            <FormDemande senddata={this.senddata} chargetitre={this.chargetitre} chargedescription={this.chargedescription} chargedate={this.chargedate} chargetime={this.chargetime}/>
+                            <FormDemande  audioScreen={this.audioScreen} senddata={this.senddata} chargetitre={this.chargetitre} chargedescription={this.chargedescription} chargedate={this.chargedate} chargetime={this.chargetime}/>
                         </Card>
                         </ScrollView>
                     
